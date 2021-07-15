@@ -6,7 +6,7 @@ from rest_framework.response import Response
 import pymongo
 from django.conf import settings
 from django.http import JsonResponse
-
+from rest_framework import status
 
 my_client = pymongo.MongoClient(settings.DB_NAME)
 dbname = my_client['sample_training']
@@ -140,27 +140,32 @@ def class_based_performance(request, pk):
         
 @api_view(['GET'])        
 def class_student(request, pk, pk_alt):
-    if request.method == 'GET':
-        request_path = request.path.split("/")
-        if request_path[1] == 'student' and request_path[3]=='class':
-            pk, pk_alt = pk_alt,pk
-        print(request.path)
-        grades = dbname['grades']
-        stdents_name = dbname["students"]
-        student_took_course_object = {}
-        student_under_course = grades.find({'class_id':pk, 'student_id':pk_alt}, {'class_id':1, 'student_id':1, 'scores': 1, "_id":0})
-        max_score = 0
-        object_to_return = None
-        for class_perf in student_under_course:
-            current_score = 0
-            for item in class_perf['scores']:
-                item['score'] =  round(item['score'])
-                current_score = current_score + item['score']
-            if current_score > max_score:
-                max_score = current_score
-                object_to_return = class_perf
-        object_to_return['total_marks'] = max_score
-        return Response(object_to_return)
+    try:
+        if request.method == 'GET':
+            request_path = request.path.split("/")
+            if request_path[1] == 'student' and request_path[3]=='class':
+                pk, pk_alt = pk_alt,pk
+            grades = dbname['grades']
+            stdents_name = dbname["students"]
+            student_took_course_object = {}
+            student_under_course = grades.find({'class_id':pk, 'student_id':pk_alt}, {'class_id':1, 'student_id':1, 'scores': 1, "_id":0})
+            max_score = 0
+            object_to_return = None
+            for class_perf in student_under_course:
+                print("data in class_perf is "   + str(class_perf))
+                current_score = 0
+                for item in class_perf['scores']:
+                    item['score'] =  int(round(item['score']))
+                    current_score = current_score + item['score']
+                if current_score > max_score:
+                    max_score = current_score
+                    object_to_return = class_perf
+            cursor1 = stdents_name.find_one({"_id":pk_alt})
+            object_to_return['student_name'] =  cursor1['name']
+            object_to_return['total_marks'] = max_score
+            return Response(object_to_return)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
 def home(request):
     return HttpResponse('please start by giving endpoints')
