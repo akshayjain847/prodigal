@@ -185,12 +185,12 @@ def student_took_course(request, pk):
 
 
 
-@api_view(['GET'])    
-def class_based_performance(request, pk):
-    if request.method == 'GET':
-        grades = dbname['grades']
-        stdents_name = dbname["students"]
-        student_under_course = grades.aggregate([{"$match":{"class_id":pk}},{"$group" :{"_id":"$student_id", "marks"}}, {"$project": {"_id":0, "student_id":"$_id"}}])
+# @api_view(['GET'])    
+# def class_based_performance(request, pk):
+#     if request.method == 'GET':
+#         grades = dbname['grades']
+#         stdents_name = dbname["students"]
+#         student_under_course = grades.aggregate([{"$match":{"class_id":pk}},{"$group" :{"_id":"$student_id", "marks"}}, {"$project": {"_id":0, "student_id":"$_id"}}])
     
     
 def class_based_performance(request, pk):
