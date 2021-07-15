@@ -162,3 +162,6 @@ def class_student(request, pk, pk_alt):
         object_to_return['total_marks'] = max_score
         return Response(object_to_return)
     
+def home(request):
+    return HttpResponse('please start by giving endpoints')
+    
