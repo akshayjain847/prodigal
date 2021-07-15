@@ -15,3 +15,4 @@ I have tried to wrap up all the mandatory things, but due to time constraint for
 Also Few very important things that include writting test cases, adhering to pep-coding guidelines. I have tried to follow the norms but haven't checked. Although i very well understand,
 what are all the guidelines should be folowed for production ready code.
 
+This application has been deployed to heroku and can be accessed at:  https://prodigalapp.herokuapp.com/
