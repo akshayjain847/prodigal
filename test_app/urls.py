@@ -11,4 +11,5 @@ urlpatterns = [
     path('class/<int:pk>/performance/', views.class_based_performance, name='class_based_performance'),
     path('class/<int:pk>/student/<int:pk_alt>/', views.class_student, name='class_student'),
     path('student/<int:pk>/class/<int:pk_alt>/', views.class_student, name='class_student'),
+    path('class/<int:pk>/final-grade-sheet/', views.final_grade_sheet, name='final_grade_sheet'),
 ]
